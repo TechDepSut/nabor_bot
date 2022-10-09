@@ -2,3 +2,6 @@
 src/__pycache__/
 .vscode/
 src/utils/__pycache__
+config.txt
+.gitignore
+nabor2022-82a267dd81e9.json
