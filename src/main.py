@@ -22,19 +22,19 @@ class Branch(BaseStateGroup):
 async def start(m: Message) -> None:
     keyboard = Keyboard(one_time=True)
     keyboard.add(Text("Регистрация"))
-    await m.answer(f"Привет, это бот для набора", keyboard=keyboard)
+    await m.answer(f"Привет, я - бот, который зарегистрирует тебя на набор в Технический департамент! Тыкай кнопку ниже, и мы начнем", keyboard=keyboard)
     await bot.state_dispenser.set(m.peer_id, Branch.NAME)
 
 
 @bot.on.message(state=Branch.NAME)
 async def name(m: Message) -> None:
-    await m.answer("Введите свое имя")
+    await m.answer("Отправь мне свое имя и фамилию")
     await bot.state_dispenser.set(m.peer_id, Branch.GROUP)
 
 
 @bot.on.message(state=Branch.GROUP)
 async def group(m: Message) -> None:
-    await m.answer("Введите группу")
+    await m.answer("В какой академической группе ты учишься?")
     user = User()
     user.name = m.text
     user.url = f"https://vk.com/id{m.from_id}"
@@ -45,7 +45,7 @@ async def group(m: Message) -> None:
 async def units(m: Message) -> None:
     user = m.state_peer.payload["payload"]
     user.group = m.text
-    await m.answer("В каких подразделениях сс состоишь?")
+    await m.answer("В каких подразделениях Студенческого совета ты состоишь?")
     await bot.state_dispenser.set(m.peer_id, Branch.REG, payload=user)
 
 
@@ -59,7 +59,7 @@ async def registration(m: Message) -> None:
     keyboard.add(Text("Отдел системной администрации"))
     keyboard.row()
     keyboard.add(Text("Секретарь"))
-    await m.answer("Выбери отдел", keyboard=keyboard)
+    await m.answer("Выбери отдел, в который ты хочешь подать заявку", keyboard=keyboard)
     await bot.state_dispenser.set(m.peer_id, Branch.CHOOSE, payload=user)
 
 
@@ -97,7 +97,7 @@ async def secretary(m: Message):
     user = m.state_peer.payload["payload"]
     user.vocation = m.text
     await m.answer(
-        "По своему желанию укажи доп. информацию (Например, опыт). Обязательно отправь что-нибудь!"
+        "По своему желанию укажи доп. информацию (Например, твой опыт). Обязательно отправь что-нибудь!"
     )
     await bot.state_dispenser.set(m.peer_id, Branch.EXTRA, payload=user)
 
@@ -107,7 +107,7 @@ async def secretary(m: Message):
     user = m.state_peer.payload["payload"]
     user.vocation = m.text
     await m.answer(
-        "По своему желанию укажи доп. информацию (Например, опыт). Обязательно отправь что-нибудь!"
+        "По своему желанию укажи доп. информацию (Например, твой опыт). Обязательно отправь что-нибудь!"
     )
     await bot.state_dispenser.set(m.peer_id, Branch.EXTRA, payload=user)
 
